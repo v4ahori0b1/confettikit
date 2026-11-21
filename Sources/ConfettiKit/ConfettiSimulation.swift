@@ -22,6 +22,8 @@ struct ConfettiSimulation {
     struct Configuration {
         var count = 160
         var origin = SIMD2<Double>(0.5, 0.45)
+        var heading = -Double.pi / 2
+        var arc = 1.6
         var lifetime = 2.4
         var gravity = 0.55
         var drag = 0.12
@@ -46,7 +48,8 @@ struct ConfettiSimulation {
 
         var rng = SplitMix64(seed: seed)
         particles = (0..<configuration.count).map { _ in
-            let heading = rng.inRange(-2.4 ... -0.74)
+            let spread = configuration.arc / 2
+            let heading = rng.inRange(configuration.heading - spread ... configuration.heading + spread)
             let speed = rng.inRange(0.35 ... 0.85)
             let drift = SIMD2(rng.inRange(-0.04 ... 0.04), rng.inRange(-0.03 ... 0.03))
 

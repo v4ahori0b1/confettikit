@@ -28,11 +28,12 @@ public extension View {
     /// `accessibilityReduceMotion` is on, the burst settles on a single frame.
     func confetti(
         isActive: Bool,
+        from burst: ConfettiBurst = .up,
         palette: ConfettiPalette = .celebration
     ) -> some View {
         overlay {
             if isActive {
-                ConfettiOverlay(palette: palette)
+                ConfettiOverlay(burst: burst, palette: palette)
                     .allowsHitTesting(false)
                     .accessibilityHidden(true)
                     .transition(.opacity)
@@ -43,17 +44,19 @@ public extension View {
 
 private struct ConfettiOverlay: View {
 
+    let burst: ConfettiBurst
     let palette: ConfettiPalette
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        ConfettiMetalView(palette: palette, reduceMotion: reduceMotion)
+        ConfettiMetalView(burst: burst, palette: palette, reduceMotion: reduceMotion)
     }
 }
 
 private struct ConfettiMetalView: UIViewRepresentable {
 
+    let burst: ConfettiBurst
     let palette: ConfettiPalette
     let reduceMotion: Bool
 
@@ -70,7 +73,7 @@ private struct ConfettiMetalView: UIViewRepresentable {
         view.device = MTLCreateSystemDefaultDevice()
 
         guard let device = view.device,
-              let renderer = MetalConfettiRenderer(device: device, palette: palette) else {
+              let renderer = MetalConfettiRenderer(device: device, palette: palette, burst: burst) else {
             return view
         }
 

@@ -53,6 +53,16 @@ A custom palette is just a list of linear RGBA colours:
 ]))
 ```
 
+A burst can be anchored instead of starting in the middle:
+
+```swift
+.confetti(isActive: isDone, from: .corner(.bottomTrailing))
+.confetti(isActive: isDone, from: .tap(at: tappedPoint))
+```
+
+`ConfettiBurst` takes an explicit `origin`, `heading`, cone width `arc`, and
+`count` when a preset does not fit.
+
 The overlay never takes touches (`allowsHitTesting(false)`) and is hidden from
 VoiceOver, because it carries no information on its own.
 
@@ -75,6 +85,8 @@ Sources/ConfettiKit/
   ConfettiSimulation.swift      deterministic particle field, no GPU types
   MetalConfettiRenderer.swift   instanced quad pipeline and frame loop
   ConfettiView.swift            SwiftUI overlay and reduce-motion switch
+  Emission/ConfettiBurst.swift  burst origin, heading and cone presets
+  Emission/BurstField.swift     burst to simulation translation
   Shaders/Confetti.metal        vertex/fragment pair
 Tests/ConfettiKitTests/
   ConfettiSimulationTests.swift

@@ -34,7 +34,7 @@ final class MetalConfettiRenderer: NSObject, MTKViewDelegate {
         }
     }
 
-    init?(device: MTLDevice, palette: ConfettiPalette) {
+    init?(device: MTLDevice, palette: ConfettiPalette, burst: ConfettiBurst = .up) {
         guard let queue = device.makeCommandQueue() else { return nil }
         guard let library = try? device.makeDefaultLibrary(bundle: .module) else { return nil }
 
@@ -65,7 +65,10 @@ final class MetalConfettiRenderer: NSObject, MTKViewDelegate {
         self.queue = queue
         self.pipeline = pipeline
         self.buffers = buffers
-        self.simulation = ConfettiSimulation(colors: palette.colors)
+        self.simulation = ConfettiSimulation(
+            configuration: burst.simulationConfiguration,
+            colors: palette.colors
+        )
         super.init()
     }
 

@@ -36,7 +36,8 @@ final class ConfettiSimulationTests: XCTestCase {
         var simulation = makeSimulation()
         let start = simulation.particles.map(\.position.y)
 
-        for _ in 0..<40 {
+        // Past the apex of the impulse: gravity has to win here.
+        for _ in 0..<110 {
             simulation.step(dt: 1.0 / 60.0, in: size)
         }
 
